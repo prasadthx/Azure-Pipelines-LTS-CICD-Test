@@ -9,12 +9,6 @@ trigger:
 pool:
   name: local-pz-mac
 
-variables:
-  - name: BROWSERSTACK_USERNAME
-    value: $(BROWSERSTACK_USERNAME)
-  - name: BROWSERSTACK_ACCESS_KEY
-    value: $(BROWSERSTACK_ACCESS_KEY)
-
 jobs:
 - job: load_test
   displayName: Load Test  # change later to windows-latest / macos-latest
