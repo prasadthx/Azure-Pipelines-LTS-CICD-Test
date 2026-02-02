@@ -49,15 +49,13 @@ jobs:
         | tar -xz --strip-components=1
 
       ls -a
-      echo $BROWSERSTACK_USERNAME
-      echo $BROWSERSTACK_ACCESS_KEY
+
+      echo "Username length: ${#BROWSERSTACK_USERNAME}"
+      echo "Key length: ${#BROWSERSTACK_ACCESS_KEY}"
       
       ./browserstack-cli load run
     displayName: Unix Download & Run BrowserStack
     condition: ne(variables['Agent.OS'], 'Windows_NT')
-    env:
-      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
-      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
   # =========================
   # WINDOWS
@@ -79,9 +77,6 @@ jobs:
       .\browserstack-cli.exe load run
     displayName: Windows Download & Run BrowserStack
     condition: eq(variables['Agent.OS'], 'Windows_NT')
-    env:
-      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
-      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
   - task: PublishTestResults@2
     displayName: Publish JUnit Report
