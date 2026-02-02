@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: local-pz-mac
 
 variables:
   - name: BROWSERSTACK_USERNAME
