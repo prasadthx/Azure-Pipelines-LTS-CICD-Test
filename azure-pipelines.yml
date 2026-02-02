@@ -17,9 +17,7 @@ variables:
 
 jobs:
 - job: load_test
-  displayName: Load Test
-  pool:
-    vmImage: ubuntu-latest   # change later to windows-latest / macos-latest
+  displayName: Load Test  # change later to windows-latest / macos-latest
 
   steps:
   - checkout: self
