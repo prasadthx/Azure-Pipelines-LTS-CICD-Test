@@ -42,7 +42,7 @@ jobs:
       curl -L https://github.com/browserstack/browserstack-playwright-load-testing-sample/archive/refs/heads/CI/CD-Sample-Playwright.tar.gz \
         | tar -xz --strip-components=1
       
-      ./browserstack-cli load run
+      browserstack-cli load run --projectName="Default Project" --entityName="dwcw"
     displayName: Unix Download & Run BrowserStack
     condition: ne(variables['Agent.OS'], 'Windows_NT')
     env:
@@ -77,3 +77,11 @@ jobs:
       testResultsFormat: JUnit
       testResultsFiles: |
         reports-*/browserstack-load-test-report-*.xml
+
+  - bash: |
+      echo "Hello World"
+    displayName: Post Report
+    condition: ne(variables['Agent.OS'], 'Windows_NT')
+    env:
+      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
