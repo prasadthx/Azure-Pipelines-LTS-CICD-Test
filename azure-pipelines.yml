@@ -48,6 +48,7 @@ jobs:
       echo "Key length: ${#BROWSERSTACK_ACCESS_KEY}"
       
       ./browserstack-cli load run
+      ls
     displayName: Unix Download & Run BrowserStack
     condition: ne(variables['Agent.OS'], 'Windows_NT')
     env:
@@ -81,4 +82,4 @@ jobs:
     inputs:
       testResultsFormat: JUnit
       testResultsFiles: |
-        "reports-*/browserstack-load-test-report-*.xml"
+        reports-*/browserstack-load-test-report-*.xml
