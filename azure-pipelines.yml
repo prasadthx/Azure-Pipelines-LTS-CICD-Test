@@ -43,7 +43,7 @@ jobs:
         | tar -xz --strip-components=1
       
       ls -a
-      browserstack-cli load run --projectName="Default Project" --entityName="dwcw"
+      ./browserstack-cli load run --projectName="Default Project" --entityName="dwcw"
     displayName: Unix Download & Run BrowserStack
     condition: ne(variables['Agent.OS'], 'Windows_NT')
     env:
