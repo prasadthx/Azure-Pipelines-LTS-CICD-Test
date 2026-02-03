@@ -79,10 +79,10 @@ jobs:
       testResultsFiles: |
         reports-*/browserstack-load-test-report-*.xml
 
-  - bash: |
+  - pwsh: |
       echo "Hello World"
     displayName: Post Report
-    condition: ne(variables['Agent.OS'], 'Windows_NT')
+    condition: succeeded()
     env:
       BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
       BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
