@@ -33,7 +33,7 @@ jobs:
       ZIP="binary-${OS}-${ARCH}-1.1.1-lts-cicd-7.zip"
       BIN="binary-${OS}-${ARCH}"
 
-      curl -fL "https://sdk-assets.bsstag.com/${ZIP}" -o bs.zip
+      curl -fL "https://sdk-assets.bsstag.com/binary-macos-arm64-1.1.1-cicd-7.zip" -o bs.zip
       unzip -oq bs.zip
 
       mv "$BIN" browserstack-cli
