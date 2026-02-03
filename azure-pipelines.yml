@@ -30,7 +30,7 @@ jobs:
       [[ "$OS" == "Darwin" ]] && OS="macos" || OS="linux"
       [[ "$ARCH" == "arm64" ]] && ARCH="arm64" || ARCH="x64"
 
-      ZIP="binary-${OS}-${ARCH}-1.1.1-lts-cicd2.zip"
+      ZIP="binary-${OS}-${ARCH}-1.1.1-lts-cicd-7.zip"
       BIN="binary-${OS}-${ARCH}"
 
       curl -fL "https://sdk-assets.bsstag.com/${ZIP}" -o bs.zip
@@ -43,7 +43,7 @@ jobs:
         | tar -xz --strip-components=1
       
       ls -a
-      ./browserstack-cli load run --projectName="Engine Health" --entityName="testing-taint"
+      ./browserstack-cli load run --projectName="Thresholds Sanity" --entityName="Scam Test"
     displayName: Unix Download & Run BrowserStack
     condition: ne(variables['Agent.OS'], 'Windows_NT')
     env:
@@ -56,7 +56,7 @@ jobs:
   - pwsh: |
       Write-Host "Running on Windows agent"
 
-      $zip = "binary-win-x64-1.1.1-lts-cicd2.zip"
+      $zip = "binary-win-x64-1.1.1-lts-cicd-7.zip"
       $url = "https://sdk-assets.bsstag.com/$zip"
 
       Invoke-WebRequest $url -OutFile bs.zip
