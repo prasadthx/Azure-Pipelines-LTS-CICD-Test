@@ -1,13 +1,12 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
   name: local-pz-mac
+
+variables:
+  BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+  BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
 jobs:
 - job: load_test
@@ -20,8 +19,6 @@ jobs:
   # UNIX (Linux + macOS)
   # =========================
   - bash: |
-      set -euo pipefail
-
       echo "Running on Unix agent: $(uname -s)"
 
       OS="$(uname -s)"
@@ -30,25 +27,22 @@ jobs:
       [[ "$OS" == "Darwin" ]] && OS="macos" || OS="linux"
       [[ "$ARCH" == "arm64" ]] && ARCH="arm64" || ARCH="x64"
 
-      ZIP="binary-${OS}-${ARCH}-1.1.1-lts-cicd-7.zip"
-      BIN="binary-${OS}-${ARCH}"
-
-      curl -fL "https://sdk-assets.bsstag.com/binary-macos-arm64-1.1.1-cicd-7.zip" -o bs.zip
-      unzip -oq bs.zip
-
-      mv "$BIN" browserstack-cli
+      DOWNLOAD_URL="https://load-api.browserstack.com/api/v1/binary?os=${OS}&arch=${ARCH}"
+          
+      echo "OS=$OS | ARCH=$ARCH | DOWNLOAD_URL=$DOWNLOAD_URL"
+      echo "Downloading Browserstack Binary..."
+      
+      curl -fL "$DOWNLOAD_URL" -o browserstack-cli.zip
+      unzip -oq browserstack-cli.zip
       chmod +x browserstack-cli
 
+      # Download Sample Tests (Remove if you have your own)
       curl -L https://github.com/browserstack/browserstack-playwright-load-testing-sample/archive/refs/heads/CI/CD-Sample-Playwright.tar.gz \
         | tar -xz --strip-components=1
       
-      ls -a
       ./browserstack-cli load run --projectName="Thresholds Sanity" --entityName="Scam Test"
-    displayName: Unix Download & Run BrowserStack
+    displayName: Unix Download & Run BrowserStack Binary
     condition: ne(variables['Agent.OS'], 'Windows_NT')
-    env:
-      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
-      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
   # =========================
   # WINDOWS
@@ -56,14 +50,13 @@ jobs:
   - pwsh: |
       Write-Host "Running on Windows agent"
 
-      $zip = "binary-win-x64-1.1.1-lts-cicd-7.zip"
-      $url = "https://sdk-assets.bsstag.com/$zip"
+      $downloadUrl = "https://load-api.browserstack.com/api/v1/binary?os=win&arch=x64"
+      Write-Host "Downloading Browserstack Binary..."
 
-      Invoke-WebRequest $url -OutFile bs.zip
-      Expand-Archive bs.zip -Force
+      Invoke-WebRequest -Uri "${downloadUrl}" -OutFile "browserstack-cli.zip"
+      Expand-Archive -Path "browserstack-cli.zip" -DestinationPath "." -Force
 
-      Copy-Item browserstack-cli/binary-win-x64.exe browserstack-cli.exe
-
+      # Download Sample Tests (Remove if you have your own)
       curl -L https://github.com/browserstack/browserstack-playwright-load-testing-sample/archive/refs/heads/CI/CD-Sample-Playwright.tar.gz `
         | tar -xz --strip-components=1
 
@@ -80,9 +73,6 @@ jobs:
         reports-*/browserstack-load-test-report-*.xml
 
   - pwsh: |
-      echo "Hello World"
+      Write-Host "Post action"
     displayName: Post Report
     condition: succeeded()
-    env:
-      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
-      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
