@@ -39,6 +39,9 @@ jobs:
       ./browserstack-cli load run --projectName="Thresholds Sanity" --entityName="Scam Test"
     displayName: Unix Download & Run BrowserStack Binary
     condition: ne(variables['Agent.OS'], 'Windows_NT')
+    env:
+      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
   # =========================
   # WINDOWS
@@ -59,6 +62,9 @@ jobs:
       .\browserstack-cli.exe load run
     displayName: Windows Download & Run BrowserStack
     condition: eq(variables['Agent.OS'], 'Windows_NT')
+    env:
+      BROWSERSTACK_USERNAME: $(BROWSERSTACK_USERNAME)
+      BROWSERSTACK_ACCESS_KEY: $(BROWSERSTACK_ACCESS_KEY)
 
   - task: PublishTestResults@2
     displayName: Publish JUnit Report
