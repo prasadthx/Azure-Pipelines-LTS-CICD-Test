@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  name: local-pz-mac
+  vmImage: windows-latest
 
 jobs:
 - job: load_test
