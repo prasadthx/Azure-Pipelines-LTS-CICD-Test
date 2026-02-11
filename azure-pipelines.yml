@@ -6,7 +6,7 @@
     vmImage: ubuntu-latest # Can be changed later to windows-latest / macos-latest
   
   jobs:
-    - job: load_test
+    - job: sample_load_test
       displayName: Load Test  
   
       steps:
